@@ -1,53 +1,49 @@
-const Discord = require('discord.js');
-const client = new Discord.Client({
-  intents: [],
+const fs = require('node:fs');
+const path = require('node:path');
+const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { token } = require('./config.json');
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+client.commands = new Collection();
+const foldersPath = path.join(__dirname, 'commands');
+const commandFolders = fs.readdirSync(foldersPath);
+
+for (const folder of commandFolders) {
+	const commandsPath = path.join(foldersPath, folder);
+	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	for (const file of commandFiles) {
+		const filePath = path.join(commandsPath, file);
+		const command = require(filePath);
+		if ('data' in command && 'execute' in command) {
+			client.commands.set(command.data.name, command);
+		} else {
+			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		}
+	}
+}
+
+client.once(Events.ClientReady, () => {
+	console.log('Ready!');
 });
-const token = 'MTE0ODIzMjg1OTY5ODYxNDMxNA.G75b1o.M0PlV395lx9NsbVEhsCPMmQdBNiKBXuVY3C64k';
 
-const { google } = require('googleapis');
-const customsearch = google.customsearch('v1');
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isChatInputCommand()) return;
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}`);
-});
+	const command = client.commands.get(interaction.commandName);
 
-client.on('guildMemberAdd', (member) => {
-  const welcomeChannel = member.guild.channels.cache.find((channel) =>
-    channel.name === 'C3'
-  );
+	if (!command) return;
 
-  if (welcomeChannel) {
-    welcomeChannel.send(`Welcome to the server, ${member.user}! \n\n What are you looking for today?`);
-  }
-});
-
-// Command to run a Google search
-client.on('message', async (message) => {
-  if (message.content.startsWith('!google')) {
-    // Extract the query from the user's message
-    const query = message.content.slice(8);
-
-    // Perform the Google search
-    try {
-      const response = await customsearch.cse.list({
-        cx: '275f598fe82c5404a',
-        q: query,
-      });
-
-      const searchResults = response.data.items;
-      if (searchResults && searchResults.length > 0) {
-        const result = searchResults[0];
-        const searchTitle = result.title;
-        const searchLink = result.link;
-        message.channel.send(`Here's the top Google search result for "${query}":\n${searchTitle}\n${searchLink}`);
-      } else {
-        message.channel.send(`No results found for "${query}".`);
-      }
-    } catch (error) {
-      console.error('Error performing Google search:', error);
-      message.channel.send('An error occurred while searching.');
-    }
-  }
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		if (interaction.replied || interaction.deferred) {
+			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+		} else {
+			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		}
+	}
 });
 
 client.login(token);
