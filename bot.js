@@ -1,6 +1,9 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
-const token = 'MTE0ODIyOTY2MzIxNTMzMzQzNg.G9yHEX.rTVAAL_7kTU2N01XdSE_ThOswzQhZJZsRkBamg';
+const client = new Discord.Client({
+  intents: [
+  ],
+});
+const token = 'MTE0ODIzMjg1OTY5ODYxNDMxNA.G75b1o.M0PlV395lx9NsbVEhsCPMmQdBNiKBXuVY3C64k';
 
 const { google } = require('googleapis');
 const customsearch = google.customsearch('v1');
@@ -11,7 +14,7 @@ client.on('ready', () => {
 
 client.on('guildMemberAdd', (member) => {
   const welcomeChannel = member.guild.channels.cache.find((channel) =>
-    channel.name === 'welcome'
+    channel.name === 'C3'
   );
 
   if (welcomeChannel) {
