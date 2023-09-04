@@ -19,7 +19,7 @@ client.on('guildMemberAdd', (member) => {
   }
 });
 
-// Create a command to run a Google search
+// Command to run a Google search
 client.on('message', async (message) => {
   if (message.content.startsWith('!google')) {
     // Extract the query from the user's message
