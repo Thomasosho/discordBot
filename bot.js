@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client({
   intents: [],
 });
-const token = 'MTE0ODIzMjg1OTY5ODYxNDMxNA.G75b1o.M0PlV395lx9NsbVEhsCPMmQdBNiKBXuVY3C64k';
+const token = 'MTE0ODIyOTY2MzIxNTMzMzQzNg.GwY-V7.2bEkL3GWtT_gB6_9Yl4zyCKfnZfoGVji4YpfxQ';
 
 const { google } = require('googleapis');
 const customsearch = google.customsearch('v1');
@@ -33,6 +33,8 @@ client.on('message', async (message) => {
         cx: '275f598fe82c5404a',
         q: query,
       });
+
+      console.log('Our res', response)
 
       const searchResults = response.data.items;
       if (searchResults && searchResults.length > 0) {
