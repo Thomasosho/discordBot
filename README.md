@@ -29,7 +29,7 @@ Configuration: Create a file called config.json in the root directory of your ap
 }
 ```
 
-Add two more properties to your config.json file, which you'll need in the deployment script:
+Add two more properties to your config.json file:
 
 clientId: Your application's client id (Discord Developer Portal > "General Information" > application id)
 guildId: Your development server's id (Enable developer mode > Right-click the server title > "Copy ID")
