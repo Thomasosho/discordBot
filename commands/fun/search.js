@@ -51,7 +51,7 @@ module.exports = {
         );
       }
     } catch (error) {
-      console.error("Error searching Google:", error);
+      console.error("Error searching Google with your queryString. Please try again later:", error);
       await interaction.reply("An error occurred while searching Google.");
     }
   },
