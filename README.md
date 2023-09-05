@@ -33,11 +33,15 @@ Add two more properties to your config.json file:
 
 clientId: Your application's client id (Discord Developer Portal > "General Information" > application id)
 guildId: Your development server's id (Enable developer mode > Right-click the server title > "Copy ID")
+key: Your Google Cloud Custom Search API Key
+searchID: Your Google Search Engine key
 ```
 {
 	"token": "your-token-goes-here",
 	"clientId": "your-application-id-goes-here",
-	"guildId": "your-server-id-goes-here"
+	"guildId": "your-server-id-goes-here",
+	"key": "your-google-custom-search-API-key",
+    	"searchID": "google-search-engine-key"
 }
 ```
 
@@ -52,6 +56,7 @@ node bot.js
 /user: The bot returns details about the user that ran the command.
 /server: The bot returns the details about the server you and the bot are on including the number of users on the server
 /age: The bot returns a message to you guessing your age 
+/c3helper: Search anything over the internet using google search, it fetches the first 5 results in an array.
 
 
 ## Authors
