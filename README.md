@@ -13,7 +13,7 @@ Interactive Responses: It can engage users with interactive messages and collect
 
 Clone the Repository: Clone this repository to your local machine:
 
-git clone https://github.com/yourusername/basic-discord-bot.git
+git clone https://github.com/Thomasosho/discordBot.git
 
 Install Dependencies: Install the required dependencies using npm (Node Package Manager):
 ```
